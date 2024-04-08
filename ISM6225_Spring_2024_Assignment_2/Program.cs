@@ -97,11 +97,15 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         public static int RemoveDuplicates(int[] nums)
         {
-            if (nums == null || nums.Length == 0)
+            if (nums == null || nums.Length == 0)// Edge case: if the array is null or empty, return 0
+
                 return 0;
+            // Start from the second element of the array
             int k = 1; 
             for (int i = 1; i < nums.Length; i++)
-            {             
+            {
+                // If the current element is not equal to the last unique element found,
+                // copy it to the position k and increment k.
                 if (nums[i] != nums[k - 1])
                 {
                     nums[k] = nums[i];
@@ -138,22 +142,24 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                // Initializing the index for the next non-zero element.
+                // Initialize the index to place the next non-zero element found in the array.
                 int nonZeroIndex = 0;
 
+                // Iterate through the array, moving non-zero elements to the front.
                 for (int i = 0; i < nums.Length; i++)
                 {
                     if (nums[i] != 0)
                     {
+                        // Place the non-zero element at the nonZeroIndex and increment the index.
                         nums[nonZeroIndex++] = nums[i];
                     }
                 }
-
+                // Fill the remainder of the array with zeros.
                 for (int i = nonZeroIndex; i < nums.Length; i++)
                 {
                     nums[i] = 0;
                 }
-
+                // Convert the array to a list and return it.
                 return nums.ToList();
             }
             catch (Exception)
@@ -206,26 +212,30 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                Array.Sort(nums3); // Sorting the array
+                Array.Sort(nums3); // // Sort the array to help find triplets and avoid duplicates.
                 List<IList<int>> result = new List<IList<int>>();
 
+                // Iterate through the array, using 'i' as the first element of the triplet.
                 for (int i = 0; i < nums3.Length - 2; i++)
                 {
-                    if (i == 0 || nums3[i] != nums3[i - 1]) // Skipping the duplicates
+                    if (i == 0 || nums3[i] != nums3[i - 1]) // Avoid considering the same element twice to prevent duplicate triplets.
                     {
-                        int left = i + 1;
+                        int left = i + 1;// Initialize two pointers, one starting just right of 'i', and the other at the end of the array.
+                        
+                        // The target is the negative value of the current element at 'i',
+                        // because the sum of the triplet should be zero.
                         int right = nums3.Length - 1;
                         int target = -nums3[i];
-
+                        // Check pairs with 'left' and 'right' to find two numbers that sum up to the target.
                         while (left < right)
                         {
                             int sum = nums3[left] + nums3[right];
-
+                            // If the sum matches the target, add the triplet to the result.
                             if (sum == target)
                             {
                                 result.Add(new List<int> { nums3[i], nums3[left], nums3[right] });
 
-                                // Skip duplicates
+                                // Skipping the duplicates
                                 while (left < right && nums3[left] == nums3[left + 1])
                                     left++;
                                 while (left < right && nums3[right] == nums3[right - 1])
@@ -327,14 +337,19 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                int decimalValue = 0;
-                int baseValue = 1;
+                int decimalValue = 0;// Initialize the variable to store the resultant decimal value.
+                int baseValue = 1;// Initialize the base value, which represents the power of 2 
 
+                // Process each binary digit starting from the least significant
                 while (binary > 0)
                 {
+                    // Extract the rightmost binary digit
                     int lastDigit = binary % 10;
+                    // Remove the rightmost digit from 'binary'
                     binary = binary / 10;
+                    // Convert binary digit to decimal and add to the result
                     decimalValue += lastDigit * baseValue;
+                    // Move to the next higher power of 2
                     baseValue = baseValue * 2;
                 }
 
@@ -391,7 +406,7 @@ namespace ISM6225_Spring_2024_Assignment_2
             Array.Fill(bucketMin, int.MaxValue);
             Array.Fill(bucketMax, int.MinValue);
 
-            // Place each number in a bucket
+            // Placing one each number in a bucket
             foreach (int num in nums)
             {
                 int bucket = (num - min) / bucketSize;
@@ -399,13 +414,13 @@ namespace ISM6225_Spring_2024_Assignment_2
                 bucketMax[bucket] = Math.Max(bucketMax[bucket], num);
             }
 
-            // Compute max gap
+            // Computing the max gap
             int maxGap = 0;
             int previousMax = min;
             for (int i = 0; i < bucketCount; i++)
             {
                 if (bucketMin[i] == int.MaxValue)
-                    continue; // Empty bucket
+                    continue; // Emptying the bucket
 
                 maxGap = Math.Max(maxGap, bucketMin[i] - previousMax);
                 previousMax = bucketMax[i];
@@ -443,16 +458,16 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         public static int LargestPerimeter(int[] nums)
         {
-            // Sort the array in non-increasing order
+            // Sorting the array in an order
             Array.Sort(nums);
             Array.Reverse(nums);
 
             for (int i = 0; i < nums.Length - 2; i++)
             {
-                // Check if the three sides can form a triangle
+                // Checking if the three sides can form a triangle
                 if (nums[i] < nums[i + 1] + nums[i + 2])
                 {
-                    // If so, return the perimeter of the triangle
+                    // If so, then return the perimeter of the triangle
                     return nums[i] + nums[i + 1] + nums[i + 2];
                 }
             }
@@ -506,7 +521,7 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                // Continuously search for 'part' in 's' and remove it until it's no longer found
+                // Continuously searching for 'part' in 's' and remove it until it's no longer found
                 int index = s.IndexOf(part);
                 while (index != -1) // -1 means 'part' is not found
                 {
@@ -561,7 +576,7 @@ namespace ISM6225_Spring_2024_Assignment_2
                 strArray[i] = "" + input[i] + ""; // Enclose each string in double quotes
             }
 
-            // Join the strings in strArray with commas and enclose them in square brackets
+            // Joining the strings in string Array with "," and enclosing them in brackets
             string result = "[" + string.Join(",", strArray) + "]";
 
             return result;
